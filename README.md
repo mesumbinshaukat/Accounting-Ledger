@@ -15,7 +15,7 @@ This is a open-source accounting ledger project.
         - *UserController.js*
         - *LedgerController.js*
     - **models**
-        - *user_model.js*
+        - *user.js*
         - *ledger_model.js*
     - **node_modules**
     - *.env*
