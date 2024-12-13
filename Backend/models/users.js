@@ -11,7 +11,8 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -28,8 +29,13 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         required: true,
-        default: "admin"
-    }
+        default: "user",
+        enum: ["user", "admin"]
+    },
+    bank: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'bank'
+    }]
 })
 
 const UserSchema = mongoose.model("users", userSchema)
