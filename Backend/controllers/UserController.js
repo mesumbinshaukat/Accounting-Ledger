@@ -105,6 +105,9 @@ const createUser = async (req, res) => {
 }
 
 
+// METHOD: POST
+// ROUTE: /api/v2/login-user
+// DESC: Login a user
 const loginUser = async (req, res) => {
     
 }
