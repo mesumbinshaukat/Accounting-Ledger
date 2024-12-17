@@ -1,6 +1,7 @@
-import { useState } from "react"
+import React from "react"
+import { useNavigate } from "react-router-dom"
 import {Button} from "../components/ui/Button"
-import {LogIn} from "lucide-react"
+import {Signature} from "lucide-react"
 import axios from "axios"
 import {zodResolver} from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -15,6 +16,10 @@ import {
   FormMessage,
 } from "@/components/ui/Form"
 import { Input } from "@/components/ui/Input"
+import { Toaster } from "@/components/ui/Toaster"
+import { useToast } from "@/hooks/use-toast"
+import { EncryptStorage } from "encrypt-storage"
+
 
 const formSchema = z.object({
     email: z.string().min(2, {
@@ -31,10 +36,19 @@ const formSchema = z.object({
       }),
     phone: z.string().min(2, {
         message: "Phone number must be at least 2 characters.",
-      }),
+      }).max(15, {
+        message: "Phone number must be at most 15 characters.",
+      })
   })
 
 const Register = () => {
+  const { toast } = useToast()
+  const navigate = useNavigate()
+  const secretKey = import.meta.env.VITE_SECRET_KEY
+  const encryptStorage = new EncryptStorage(secretKey, {
+    localStorage: 'localStorage'
+  })
+  
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -53,10 +67,31 @@ const Register = () => {
       try {
         // const postUser = axios.post("api/v2/create-user", user)
 
+        axios.post("api/v2/create-user", values)
+        .then((response) => {
+          console.log(response.data);
+          toast({
+            variant: "default",
+            title: "Success",
+            description: "User created successfully",
+          })
+          encryptStorage.setItem("token", response.data.token)
+          console.log("Token From Server: " + response.data.token)
+          console.log("Token: " + encryptStorage.getItem("token"))
+          navigate("/home")
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
       
        } catch (error) {
         console.log(error)
-        throw new Error("Error while creating user")
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: error.response.data.message,
+        })
        }
 
     }
@@ -130,7 +165,7 @@ const Register = () => {
 
 <FormField
           control={form.control}
-          name="Phone Number"
+          name="phone"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Phone Number</FormLabel>
@@ -141,13 +176,13 @@ const Register = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit"><Signature />Submit</Button>
       </form>
     </Form>
 
         </div>
 
-
+          <Toaster />
         </>
     )
 }

@@ -86,7 +86,7 @@ const createUser = async (req, res) => {
             console.log(jwtToken)
             return res.status(201).json({
                 message: "User Created",
-                jwtToken
+                token: jwtToken
             })
         }
         else{
