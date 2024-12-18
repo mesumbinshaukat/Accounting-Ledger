@@ -24,7 +24,7 @@ app.post("/api/v2/create-user", createUser)
 app.post("/api/v2/login-user", loginUser)
 
 // Simple Accounting Ledger
-app.post("/api/v2/easy-accounts", createAccount).put("/api/v2/update-easy-account", updateAccount).get("/api/v2/easy-accounts", getAllAccounts)
+app.post("/api/v2/easy-accounts", createAccount).put("/api/v2/update-easy-account", updateAccount).get("/api/v2/easy-accounts/:user_Id", getAllAccounts)
 
 app.post("/api/v2/easy-transaction", createTransaction).put("/api/v2/update-easy-transaction", updateTransaction).get("/api/v2/easy-transaction", getAllTransactions)
 

@@ -10,6 +10,7 @@ import CreateAccount from './pages/Dashboard/CreateAccount.tsx'
 import ProtectedRoute from './ProtectedRoute.tsx'
 import Index from './pages/Dashboard/Index.tsx'
 import _404 from './404/_404.tsx'
+import CreateTransaction from './pages/Dashboard/CreateTransaction.tsx'
 
 const value = localStorage.getItem('token');
 
@@ -26,6 +27,7 @@ const router = createBrowserRouter(
     <Route path="/dashboard" element={<ProtectedRoute/>}>
       <Route index element={<Index/>}/>
       <Route path="create-account" element={<CreateAccount/>}/>
+      <Route path="create-transaction" element={<CreateTransaction/>}/>
     </Route>
     </>
   )

@@ -133,9 +133,24 @@ const createAccount = async (req, res) => {
 // DESC: Get all accounts for specific user
 const getAllAccounts = async (req, res) => {
     try {
-        const {userId} = req.body
+        const {user_Id} = req.params
 
-        console.table({userId})
+        console.table({user_Id})
+
+        if(!user_Id){
+            console.log("You are not logged in")
+            return res.status(400).json({
+                message: "You are not logged in"
+            })
+        }
+
+        const userIdObj = jwt.verify(user_Id, process.env.JWT_SECRET)
+
+        console.log("userIdObj: ", userIdObj)
+
+        const userId = userIdObj.user_id
+
+        console.log("userId: ", userId)
 
         const userIdRegex = /^[0-9a-fA-F]{24}$/
 
@@ -227,9 +242,13 @@ const updateAccount = async (req, res) => {
 // DESC: Create a new transaction
 const createTransaction = async (req, res) => {
     try {
-        const {userId, accountId, amount, description, transactionType} = req.body
+        let {userId, accountId, amount, description, transactionType} = req.body
 
         console.table({accountId, userId, amount, description, transactionType})
+
+        userId = jwt.verify(userId, process.env.JWT_SECRET)
+
+        userId = userId.user_id
 
         if(!mongoose.Types.ObjectId.isValid(accountId) || !await basicAccounts.findById(accountId)){
             throw new Error("Invalid accountId")
