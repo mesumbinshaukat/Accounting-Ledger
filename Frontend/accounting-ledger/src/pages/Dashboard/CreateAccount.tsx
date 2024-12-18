@@ -96,7 +96,7 @@ const CreateAccount = () => {
               .then((response) => {
                 console.log(response.data);
                 toast({
-                  variant: "default",
+                  variant: "success",
                   title: "Success",
                   description: "Account created successfully",
                 })

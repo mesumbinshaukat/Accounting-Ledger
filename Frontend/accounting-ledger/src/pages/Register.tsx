@@ -55,14 +55,11 @@ const Register = () => {
         }
     })
     function onSubmit(values: z.infer<typeof formSchema>) {
-      // Do something with the form values.
-      // ✅ This will be type-safe and validated.
       console.log(values)
 
       try {
-        // const postUser = axios.post("api/v2/create-user", user)
 
-        axios.post("api/v2/create-user", values)
+        axios.post("/api/v2/create-user", values)
         .then((response) => {
           console.log(response.data);
           toast({
@@ -73,7 +70,7 @@ const Register = () => {
           localStorage.setItem("token", response.data.token)
           console.log("Token From Server: " + response.data.token)
           console.log("Token: " + localStorage.getItem("token"))
-          navigate("/home")
+          navigate("/dashboard")
         })
         .catch((error) => {
           console.log(error);
@@ -171,7 +168,7 @@ const Register = () => {
             </FormItem>
           )}
         />
-        <Button type="submit"><Signature />Submit</Button>
+        <Button type="submit"><Signature />Register</Button>
       </form>
     </Form>
 

@@ -59,7 +59,7 @@ const Login = () => {
           localStorage.setItem("token", response.data.token)
           console.log("Token From Server: " + response.data.token)
           console.log("Token: " + localStorage.getItem("token"))
-          navigate("/home")
+          navigate("/dashboard")
         })
         .catch((error) => {
           console.log(error);
