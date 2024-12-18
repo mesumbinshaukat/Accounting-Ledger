@@ -109,6 +109,54 @@ const createUser = async (req, res) => {
 // ROUTE: /api/v2/login-user
 // DESC: Login a user
 const loginUser = async (req, res) => {
+    try {
+        const {email, password} = req.body
+
+        console.table({email, password})
+
+        const email_regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+
+        if(!email_regex.test(email)){
+            console.log("Invalid email")
+            console.log(email)
+            return res.status(400).json({
+                message: "Invalid email"
+            })
+        }
+
+        const user = await userModel.findOne({email})
+
+        if(!user){
+            console.log("User not found")
+            return res.status(400).json({
+                message: "User not found"
+            })
+        }
+
+        const checkPassword = await bcryptjs.compare(password, user.password)
+
+        if(!checkPassword){
+            console.log("Invalid password")
+            return res.status(400).json({
+                message: "Invalid password"
+            })
+        }
+
+        const jwtToken = jwt.sign({user_id: user._id}, process.env.JWT_SECRET)
+
+        console.log(jwtToken)
+
+        return res.status(200).json({
+            message: "User logged in",
+            token: jwtToken
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            message: "Error while logging in user"
+        })
+    }
     
 }
 

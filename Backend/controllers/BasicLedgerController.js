@@ -2,6 +2,7 @@ const mongoose = require("mongoose")
 const userModel = require("../models/users")
 const basicTransaction = require("../models/basicTransaction")
 const basicAccounts = require("../models/basicAccounts")
+const jwt = require("jsonwebtoken")
 
 const accountValidator = async (userIdRegex, enumName, balanceRegex, descriptionRegex, enumStatus) => {
     const userIdRegex_ = /^[0-9a-fA-F]{24}$/
@@ -63,14 +64,34 @@ const transactionValidator = async (userId, accountId, amount, description, tran
 // DESC: Create a new account
 const createAccount = async (req, res) => {
     try {
-        const {userId, name, balance, description, status} = req.body
+        const {name, balance, description, status, token} = req.body
 
-        console.table({userId, name, balance, description, status})
+        console.table({token, name, balance, description, status})
 
-        await accountValidator(userId, name, balance, description, status);
+        if(!token){
+            console.log("You are not logged in")
+            return res.status(400).json({
+                message: "You are not logged in"
+            })
+        }
+
+        const userId = await jwt.verify(token, process.env.JWT_SECRET)
+
+        console.log("userId: ", userId.user_id)
+
+        if(!userId.user_id){
+            console.log("You are not logged in")
+            return res.status(400).json({
+                message: "You are not logged in"
+            })
+        }
+
+        const user_id = userId.user_id
+
+        await accountValidator(user_id, name, balance, description, status);
 
         const newAccount = await new basicAccounts({
-            userId,
+            userId: user_id,
             name,
             balance,
             description,
@@ -103,7 +124,7 @@ const createAccount = async (req, res) => {
         console.log("Catch Error: ", error)
         console.log("Specific Error Message: ", error.message)
         // throw new Error("Error while creating account")
-        return res.status(500).json({ message: "Error while creating account" })
+        return res.status(500).json({ message: error.message })
     }
 }
 

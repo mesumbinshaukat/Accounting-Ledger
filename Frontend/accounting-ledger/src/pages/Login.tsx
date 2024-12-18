@@ -1,7 +1,7 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import {Button} from "../components/ui/Button"
-import {Signature} from "lucide-react"
+import {LogIn} from "lucide-react"
 import axios from "axios"
 import {zodResolver} from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -23,24 +23,14 @@ import { useToast } from "@/hooks/use-toast"
 const formSchema = z.object({
     email: z.string().min(2, {
         message: "Email must be at least 2 characters.",
-      }),
+      }).regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
     password: z.string().min(2, {
         message: "Password must be at least 2 characters.",
       }),
-    first_name: z.string().min(2, {
-        message: "First name must be at least 2 characters.",
-      }),
-    last_name: z.string().min(2, {
-        message: "Last name must be at least 2 characters.",
-      }),
-    phone: z.string().min(2, {
-        message: "Phone number must be at least 2 characters.",
-      }).max(15, {
-        message: "Phone number must be at most 15 characters.",
-      })
+   
   })
 
-const Register = () => {
+const Login = () => {
   const { toast } = useToast()
   const navigate = useNavigate()
 
@@ -49,9 +39,7 @@ const Register = () => {
         defaultValues: {
             email: "",
             password: "",
-            first_name: "",
-            last_name: "",
-            phone: "",
+            
         }
     })
     function onSubmit(values: z.infer<typeof formSchema>) {
@@ -60,9 +48,7 @@ const Register = () => {
       console.log(values)
 
       try {
-        // const postUser = axios.post("api/v2/create-user", user)
-
-        axios.post("api/v2/create-user", values)
+        axios.post("/api/v2/login-user", values)
         .then((response) => {
           console.log(response.data);
           toast({
@@ -85,7 +71,7 @@ const Register = () => {
         toast({
           variant: "destructive",
           title: "Error",
-          description: error.response.data.message,
+          description: error.response?.data.message,
         })
        }
 
@@ -129,49 +115,7 @@ const Register = () => {
           )}
         />
 
-<FormField
-          control={form.control}
-          name="first_name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>First Name</FormLabel>
-              <FormControl>
-                <Input placeholder="First Name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-
-<FormField
-          control={form.control}
-          name="last_name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Last Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Last Name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-<FormField
-          control={form.control}
-          name="phone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Phone Number</FormLabel>
-              <FormControl>
-                <Input placeholder="Phone Number" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit"><Signature />Submit</Button>
+        <Button className="w-full" type="submit"><LogIn />Login</Button>
       </form>
     </Form>
 
@@ -182,4 +126,4 @@ const Register = () => {
     )
 }
 
-export default Register
+export default Login
