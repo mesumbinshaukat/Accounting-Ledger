@@ -66,6 +66,7 @@ const formSchema = z.object({
 const CreateAccount = () => {
   const { toast } = useToast()
 
+
   // State for Drawer visibility and form values
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [submittedValues, setSubmittedValues] = useState<z.infer<typeof formSchema> | null>(null)
@@ -145,11 +146,11 @@ const CreateAccount = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Role</FormLabel>
+                  <FormLabel>Account Name</FormLabel>
                   <Select onValueChange={field.onChange}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a role" />
+                        <SelectValue placeholder="Select a name" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

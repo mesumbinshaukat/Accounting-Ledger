@@ -1,5 +1,5 @@
 import React from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import {Button} from "../components/ui/Button"
 import {Signature} from "lucide-react"
 import axios from "axios"
@@ -168,7 +168,11 @@ const Register = () => {
             </FormItem>
           )}
         />
-        <Button type="submit"><Signature />Register</Button>
+        <Button className="w-full mb-4" type="submit"><Signature />Register</Button>
+<div className="text-center mt-4 space-y-2">
+
+      <Link className="mt-4 " to="/login">Already have an account?</Link>
+</div>
       </form>
     </Form>
 

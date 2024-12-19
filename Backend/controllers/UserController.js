@@ -146,6 +146,13 @@ const loginUser = async (req, res) => {
 
         console.log(jwtToken)
 
+        res.cookie("token", jwtToken, {
+            expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+            httpOnly: true,
+            // secure: true,
+            sameSite: "Strict"
+        })
+
         return res.status(200).json({
             message: "User logged in",
             token: jwtToken

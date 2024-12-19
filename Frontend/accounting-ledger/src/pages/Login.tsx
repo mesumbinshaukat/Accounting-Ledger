@@ -1,5 +1,5 @@
 import React from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import {Button} from "../components/ui/Button"
 import {LogIn} from "lucide-react"
 import axios from "axios"
@@ -116,6 +116,9 @@ const Login = () => {
         />
 
         <Button className="w-full" type="submit"><LogIn />Login</Button>
+        <div className="text-center mt-4">
+          <Link className="mt-4" to="/">Don't have an account?</Link>
+        </div>
       </form>
     </Form>
 

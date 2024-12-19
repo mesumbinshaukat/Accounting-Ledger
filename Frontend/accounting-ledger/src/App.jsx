@@ -1,21 +1,24 @@
-import { Outlet } from 'react-router-dom'
+import React from "react";
+import { Outlet } from "react-router-dom";
+import { AppSidebar } from "./components/ui/AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/Sidebar"
-import { AppSidebar } from "@/components/app-sidebar"
 
 function App() {
-
-  return (
-    <>
+  const token = localStorage.getItem("token")
+  if(!token) {
+    console.log("Token not found")
+    return <Outlet />
+  }
+  console.log("Token found")
+  return <>
     <SidebarProvider>
       <AppSidebar />
-      <main>
-        <SidebarTrigger />
-        
-   <Outlet/>
+      <SidebarTrigger />
+      <main className="ml-0 transition-all duration-300 ease-in-out">
+        <Outlet />
       </main>
     </SidebarProvider>
     </>
-  )
 }
 
-export default App
+export default App;

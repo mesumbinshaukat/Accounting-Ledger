@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/Select"
 import { Textarea } from "@/components/ui/Textarea"
+import { Skeleton } from "@/components/ui/Skeleton"
 
 const formSchema = z.object({
   accountId: z.string().min(1, {
@@ -57,8 +58,41 @@ const CreateTransaction = () => {
     },
   })
 
-  const fetchAccounts = async () => {
-    const token = localStorage.getItem("token")
+  // const fetchAccounts = async () => {
+  //   const token = localStorage.getItem("token")
+
+  //   if (!token) {
+  //     toast({
+  //       variant: "destructive",
+  //       title: "Error",
+  //       description: "You are not logged in.",
+  //     })
+  //     return
+  //   }
+
+  //   setIsLoading(true)
+  //   try {
+  //     const userId = token // Assuming the token is userId; adapt if different
+  //     const response = await axios.get(`/api/v2/easy-accounts/${userId}`)
+  //     console.log(response.data)
+  //     setAccounts(response.data.accounts || [])
+  //   } catch (error) {
+  //     console.error("Error fetching accounts:", error)
+  //     toast({
+  //       variant: "destructive",
+  //       title: "Error",
+  //       description: "Unable to fetch accounts. Please try again.",
+  //     })
+  //   } finally {
+  //     setIsLoading(false)
+  //   }
+  // }
+
+
+  useEffect(() => {   
+    ;(async () => {
+      setIsLoading(true)
+        const token = localStorage.getItem("token")
 
     if (!token) {
       toast({
@@ -69,12 +103,13 @@ const CreateTransaction = () => {
       return
     }
 
-    setIsLoading(true)
+   
     try {
       const userId = token // Assuming the token is userId; adapt if different
       const response = await axios.get(`/api/v2/easy-accounts/${userId}`)
       console.log(response.data)
       setAccounts(response.data.accounts || [])
+      setIsLoading(false)
     } catch (error) {
       console.error("Error fetching accounts:", error)
       toast({
@@ -82,15 +117,26 @@ const CreateTransaction = () => {
         title: "Error",
         description: "Unable to fetch accounts. Please try again.",
       })
+      setIsLoading(false)
     } finally {
       setIsLoading(false)
     }
-  }
-
-
-  useEffect(() => {   
-    fetchAccounts()
+      
+      
+    })()
   }, [toast])
+
+  if(isLoading) {
+    return (
+      <div className="container mx-auto flex items-center justify-center h-screen">
+        <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[250px]" />
+          <Skeleton className="h-4 w-[200px]" />
+        </div>
+      </div>
+    )
+  }
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const token = localStorage.getItem("token")
@@ -129,7 +175,7 @@ const CreateTransaction = () => {
       });
 
       form.reset()
-      fetchAccounts()
+      // fetchAccounts()
     } catch (error) {
       console.error("Error creating transaction:", error)
       toast({
