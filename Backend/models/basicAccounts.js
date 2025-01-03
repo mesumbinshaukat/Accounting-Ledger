@@ -17,6 +17,10 @@ const basicAccountsSchema = new mongoose.Schema({
             message: props => `${props.value} is not a valid name!`
         },
     },
+    title: {
+        type: String,
+        required: true
+    },
     balance: {
         type: Number,
         required: true

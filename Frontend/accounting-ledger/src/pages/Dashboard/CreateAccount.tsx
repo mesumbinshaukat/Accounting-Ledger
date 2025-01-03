@@ -46,6 +46,9 @@ const formSchema = z.object({
       message: "Name must be at most 4 characters.",
     })
     .default("cash"),
+    title: z.string().min(4, {
+      message: "Title must be at least 4 characters.",
+    }),
   balance: z.coerce.number().min(1, {
     message: "Balance should be equals to or more than 1.",
   }),
@@ -75,6 +78,7 @@ const CreateAccount = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "cash",
+      title: "",
       balance: 0,
       description: "",
       status: "active",
@@ -158,6 +162,20 @@ const CreateAccount = () => {
                       <SelectItem value="bank">BANK</SelectItem>
                     </SelectContent>
                   </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+              <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Title</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Title" {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

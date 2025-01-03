@@ -4,8 +4,9 @@ const basicTransaction = require("../models/basicTransaction")
 const basicAccounts = require("../models/basicAccounts")
 const jwt = require("jsonwebtoken")
 
-const accountValidator = async (userIdRegex, enumName, balanceRegex, descriptionRegex, enumStatus) => {
+const accountValidator = async (userIdRegex, title, enumName, balanceRegex, descriptionRegex, enumStatus) => {
     const userIdRegex_ = /^[0-9a-fA-F]{24}$/
+    const titleRegex = /^[a-zA-Z0-9\s]+$/
     const enumName_ = ['bank', 'cash']
     const balanceRegex_ = /^[0-9]+$/
     const descriptionRegex_ = /^[a-zA-Z0-9\s]+$/
@@ -15,13 +16,17 @@ const accountValidator = async (userIdRegex, enumName, balanceRegex, description
         throw new Error("Invalid userId");
     }
 
+    if (!titleRegex.test(title)) {
+        throw new Error("Invalid title");
+    }
+
     if (!enumName_.includes(enumName)) {
         throw new Error("Invalid name");
     }
 
     if (!balanceRegex_.test(balanceRegex)) {
         throw new Error("Invalid balance");
-    }
+    }   
 
     if (!descriptionRegex_.test(descriptionRegex)) {
         throw new Error("Invalid description");
@@ -64,7 +69,7 @@ const transactionValidator = async (userId, accountId, amount, description, tran
 // DESC: Create a new account
 const createAccount = async (req, res) => {
     try {
-        const {name, balance, description, status, token} = req.body
+        const {name, title, balance, description, status, token} = req.body
 
         console.table({token, name, balance, description, status})
 
@@ -88,11 +93,12 @@ const createAccount = async (req, res) => {
 
         const user_id = userId.user_id
 
-        await accountValidator(user_id, name, balance, description, status);
+        await accountValidator(user_id, title, name, balance, description, status);
 
         const newAccount = await new basicAccounts({
             userId: user_id,
             name,
+            title,
             balance,
             description,
             status
@@ -159,6 +165,8 @@ const getAllAccounts = async (req, res) => {
         }
 
         const accounts = await basicAccounts.find({userId})
+
+        console.log("accounts: ", accounts)
 
         if(!accounts){
             console.log("Error while getting accounts")

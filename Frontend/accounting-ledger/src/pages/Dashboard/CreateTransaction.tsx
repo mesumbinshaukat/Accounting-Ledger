@@ -58,37 +58,7 @@ const CreateTransaction = () => {
     },
   })
 
-  // const fetchAccounts = async () => {
-  //   const token = localStorage.getItem("token")
-
-  //   if (!token) {
-  //     toast({
-  //       variant: "destructive",
-  //       title: "Error",
-  //       description: "You are not logged in.",
-  //     })
-  //     return
-  //   }
-
-  //   setIsLoading(true)
-  //   try {
-  //     const userId = token // Assuming the token is userId; adapt if different
-  //     const response = await axios.get(`/api/v2/easy-accounts/${userId}`)
-  //     console.log(response.data)
-  //     setAccounts(response.data.accounts || [])
-  //   } catch (error) {
-  //     console.error("Error fetching accounts:", error)
-  //     toast({
-  //       variant: "destructive",
-  //       title: "Error",
-  //       description: "Unable to fetch accounts. Please try again.",
-  //     })
-  //   } finally {
-  //     setIsLoading(false)
-  //   }
-  // }
-
-
+ 
   useEffect(() => {   
     ;(async () => {
       setIsLoading(true)

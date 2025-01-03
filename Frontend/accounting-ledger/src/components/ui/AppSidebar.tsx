@@ -1,5 +1,5 @@
 import React from "react"
-import { ArrowRightLeft, Home, NotebookPen, Search, Settings, User2, ChevronUp } from "lucide-react"
+import { ArrowRightLeft, Home, NotebookPen, Search, Settings, User2, ChevronUp, CreditCard } from "lucide-react"
 import { Link } from "react-router-dom"
 
 import {
@@ -38,6 +38,11 @@ const items = [
     url: "/dashboard/create-transaction",
     icon: ArrowRightLeft,
   },
+  {
+    title: "Accounts",
+    url: "/dashboard/accounts",
+    icon: CreditCard,
+  }
 ]
 
 export function AppSidebar() {
@@ -93,41 +98,3 @@ export function AppSidebar() {
     </Sidebar>
   )
 }
-
-
-
-// import React from "react";
-// import { Sidebar, SidebarContent, SidebarMenu, SidebarMenuItem } from "@/components/ui/Sidebar";
-// import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
-// import { useSidebar } from "./SidebarContext";
-
-// const items = [
-//   { title: "Home", url: "#", icon: Home },
-//   { title: "Inbox", url: "#", icon: Inbox },
-//   { title: "Calendar", url: "#", icon: Calendar },
-//   { title: "Search", url: "#", icon: Search },
-//   { title: "Settings", url: "#", icon: Settings },
-// ];
-
-// export function AppSidebar() {
-//   const { isOpen } = useSidebar(); // Access context here
-
-//   return (
-//     <Sidebar
-//       className={`fixed top-0 left-0 h-full w-64 transform ${
-//         isOpen ? "translate-x-0" : "-translate-x-full"
-//       } transition-transform duration-300 ease-in-out`}
-//     >
-//       <SidebarContent>
-//         <SidebarMenu>
-//           {items.map((item) => (
-//             <SidebarMenuItem key={item.title}>
-//               <item.icon className="mr-2" />
-//               {item.title}
-//             </SidebarMenuItem>
-//           ))}
-//         </SidebarMenu>
-//       </SidebarContent>
-//     </Sidebar>
-//   );
-// }
