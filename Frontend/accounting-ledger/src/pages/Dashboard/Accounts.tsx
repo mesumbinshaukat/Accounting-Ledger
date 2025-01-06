@@ -69,6 +69,7 @@ const Accounts = () => {
       const response = await axios.get(`/api/v2/easy-accounts/${userId}`)
       console.log(response.data)
       setData(response.data.accounts || [])
+      // const actionDropdown =  
       setIsLoading(false)
     } catch (error) {
       console.error("Error fetching accounts:", error)
